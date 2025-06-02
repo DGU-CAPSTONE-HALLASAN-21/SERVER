@@ -15,4 +15,9 @@ public class OracleProperties {
     private String region;
     private String compartmentId;
     private String modelId;
+    private String passphrase;
+    private String identityDomainId;
+    private String vcnOcid;
+    private String subnetOcid;
+    private String clusterOcid;
 }
