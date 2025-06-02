@@ -44,3 +44,5 @@ bin/
 
 .env
 src/resource/.env
+application.yml
+oci_api_key.pem

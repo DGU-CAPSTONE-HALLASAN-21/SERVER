@@ -1,25 +1,43 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.5'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.2.5' // 최신 안정 버전
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'org.dgu'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' } // Spring AI 전용 저장소
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // Spring 기본
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // PEM 키 파일 파싱용 (PKCS#1 대응)
+    implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
+
+    // 데이터베이스
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     runtimeOnly 'com.h2database:h2'
 
+    // oci sdk
+    implementation 'com.oracle.oci.sdk:oci-java-sdk-core:3.36.0'
+    implementation 'com.oracle.oci.sdk:oci-java-sdk-common:3.36.0'
+    implementation 'com.oracle.oci.sdk:oci-java-sdk-generativeaiinference:3.36.0'
+    implementation 'com.oracle.oci.sdk:oci-java-sdk-common-httpclient-jersey3:3.36.0'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
