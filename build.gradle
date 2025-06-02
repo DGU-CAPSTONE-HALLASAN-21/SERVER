@@ -27,6 +27,11 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
     runtimeOnly 'com.h2database:h2'
 
+    // oci sdk
+    implementation("com.oracle.oci.sdk:oci-java-sdk-generativeaiinference:3.36.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common:3.36.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-core:3.36.0")
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
