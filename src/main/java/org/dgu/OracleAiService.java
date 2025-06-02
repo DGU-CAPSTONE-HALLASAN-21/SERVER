@@ -1,5 +1,11 @@
 package org.dgu;
 
+import com.oracle.bmc.Region;
+import com.oracle.bmc.auth.AuthenticationDetailsProvider;
+import com.oracle.bmc.generativeaiinference.GenerativeAiInferenceClient;
+import com.oracle.bmc.generativeaiinference.model.*;
+import com.oracle.bmc.generativeaiinference.requests.GenerateTextRequest;
+import com.oracle.bmc.generativeaiinference.responses.GenerateTextResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,27 +19,35 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class OracleAiService {
-    private final SignatureGenerator signatureGenerator;
+    private final AuthenticationDetailsProvider authProvider;
     private final OracleProperties oracleProperties;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String generateText(String prompt) throws Exception {
+    public LlmInferenceResponse generateText(String prompt) throws Exception {
         String endpoint = String.format("https://inference.generativeai.%s.oci.oraclecloud.com/20231130/actions/generateText", oracleProperties.getRegion());
+        GenerativeAiInferenceClient client = new GenerativeAiInferenceClient(authProvider);
+        client.setRegion(Region.US_CHICAGO_1);
 
-        Map<String, Object> body = Map.of(
-                "servingMode", Map.of(
-                        "modelId", oracleProperties.getModelId(),
-                        "servingType", "ON_DEMAND"
-                ),
-                "compartmentId", oracleProperties.getCompartmentId(),
-                "input", prompt
-        );
+        CohereLlmInferenceRequest llmRequest = CohereLlmInferenceRequest.builder()
+                .prompt(prompt)
+                .build();
 
-        HttpHeaders headers = signatureGenerator.generateHeaders(endpoint, "POST", body);
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+        GenerateTextRequest request = GenerateTextRequest.builder()
+                .generateTextDetails(
+                        GenerateTextDetails.builder()
+                                .compartmentId(oracleProperties.getCompartmentId())
+                                .servingMode(
+                                        OnDemandServingMode.builder()
+                                                .modelId(oracleProperties.getModelId())
+                                                .build()
+                                )
+                                .inferenceRequest(llmRequest)
+                                .build()
+                )
+                .build();
 
-        ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.POST, entity, String.class);
-        return response.getBody();
+        GenerateTextResponse response = client.generateText(request);
+        return response.getGenerateTextResult().getInferenceResponse();
     }
 }
