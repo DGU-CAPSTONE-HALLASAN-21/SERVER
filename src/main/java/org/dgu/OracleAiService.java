@@ -1,20 +1,18 @@
 package org.dgu;
 
+import com.oracle.bmc.ClientConfiguration;
 import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.generativeaiinference.GenerativeAiInferenceClient;
-import com.oracle.bmc.generativeaiinference.model.*;
+import com.oracle.bmc.generativeaiinference.model.CohereLlmInferenceRequest;
+import com.oracle.bmc.generativeaiinference.model.GenerateTextDetails;
+import com.oracle.bmc.generativeaiinference.model.LlmInferenceResponse;
+import com.oracle.bmc.generativeaiinference.model.OnDemandServingMode;
 import com.oracle.bmc.generativeaiinference.requests.GenerateTextRequest;
 import com.oracle.bmc.generativeaiinference.responses.GenerateTextResponse;
+import com.oracle.bmc.http.client.jersey3.Jersey3HttpProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +20,14 @@ public class OracleAiService {
     private final AuthenticationDetailsProvider authProvider;
     private final OracleProperties oracleProperties;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
     public LlmInferenceResponse generateText(String prompt) throws Exception {
         String endpoint = String.format("https://inference.generativeai.%s.oci.oraclecloud.com/20231130/actions/generateText", oracleProperties.getRegion());
-        GenerativeAiInferenceClient client = new GenerativeAiInferenceClient(authProvider);
-        client.setRegion(Region.US_CHICAGO_1);
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder().build();
+
+        GenerativeAiInferenceClient client = GenerativeAiInferenceClient.builder()
+                .region(Region.US_CHICAGO_1)
+                .httpProvider(new Jersey3HttpProvider())
+                .build(authProvider);
 
         CohereLlmInferenceRequest llmRequest = CohereLlmInferenceRequest.builder()
                 .prompt(prompt)
