@@ -1,0 +1,47 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui        # Swagger UI 엔드포인트를 기본 /swagger-ui에서 노출
+    operationsSorter: method # (선택) 엔드포인트 정렬: methodˑtagˑalpha 등
+    tagsSorter: alpha        # (선택) 태그 정렬 방식
+    docExpansion: none       # (선택) 기본 펼침 상태(none, list, full)
+    defaultModelsExpandDepth: -1 # (선택) 모델 창 접기
+
+spring:
+  ai:
+    oci:
+      genai:
+        chat:
+          model: cohere.command
+          endpoint: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
+          authentication:
+            method: api-key
+            api-key:
+              tenancy-id: ${TENANCY_ID}
+              user-id: ${USER_ID}
+              key-fingerprint: ${KEY_FINGERPRINT}
+              private-key-location: ${PRiVATE_KEY}
+              region: ${USER_OCID}
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+oracle:
+  user-ocid: ${USER_OCID}
+  tenancy-ocid: ${TENANCY_OCID}
+  key-fingerprint: ${KEY_FINGERPRIN}
+  private-key-path: ${PRIVATE_KEY_PATH}
+  region: "us-chicago-1"
+  compartment-id: ${COMPARTMENT_ID}
+  model-id: "cohere.command"
