@@ -7,6 +7,7 @@ import org.dgu.dto.chat.ReqChatRename;
 import org.dgu.dto.chat.ResChat;
 import org.dgu.dto.chat.ResChatDetail;
 import org.dgu.dto.message.ResMessage;
+import org.dgu.entity.Folder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
