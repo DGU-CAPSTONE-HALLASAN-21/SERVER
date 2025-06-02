@@ -43,4 +43,5 @@ bin/
 .DS_Store
 
 .env
-src/resource/.env
+src/main/resources/.env
+src/main/resources/Wallet_hallasan

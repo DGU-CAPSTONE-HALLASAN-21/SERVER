@@ -7,6 +7,11 @@ springdoc:
     defaultModelsExpandDepth: -1 # (선택) 모델 창 접기
 
 spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ${AUTONOMOUS_URL}
+    username: ${AUTONOMOUS_USERNAME}          # 실제 DB 사용자명
+    password: ${AUTONOMOUS_PASSWORD}   # 실제 DB 비밀번호
   ai:
     oci:
       genai:
@@ -20,16 +25,9 @@ spring:
               user-id: ${USER_ID}
               key-fingerprint: ${KEY_FINGERPRINT}
               private-key-location: ${PRiVATE_KEY}
-              region: ${USER_OCID}
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
+              region: ap-chuncheon-1
   jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
       ddl-auto: update
     show-sql: true
