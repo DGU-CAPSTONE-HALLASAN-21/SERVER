@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
-    List<Folder> findAllByUuid(UUID uuid);
+    List<Folder> findAllByUserUuid(UUID uuid);
 }
 

@@ -1,20 +1,24 @@
 package org.dgu.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Folder {
-
+public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long folderId;
+    private Long fileId;
 
-    private String folderName;
+    private String fileName;
+
+    private String fileUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,13 +28,9 @@ public class Folder {
     private UUID userUuid;
 
     @Builder
-    public Folder(String folderName, User user, UUID userUuid) {
-        this.folderName = folderName;
+    public File(String fileName, User user) {
+        this.fileName = fileName;
         this.user = user;
         this.userUuid = UUID.randomUUID();
-    }
-
-    public void updateName(String name) {
-        this.folderName = name;
     }
 }

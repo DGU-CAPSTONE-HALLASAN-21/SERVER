@@ -20,14 +20,14 @@ public class FolderService {
 
     public List<ResFolder> createFolder(ReqFolderCreate request) {
         Folder folder = Folder.builder()
-                .name(request.name()).uuid(request.uuid())
+                .folderName(request.name()).userUuid(request.uuid())
                 .build();
 
         Folder saved = folderRepository.save(folder);
 
         // 폴더 저장 후 전체 목록 조회
-        return folderRepository.findAllByUuid(request.uuid()).stream()
-                .map(f -> new ResFolder(f.getId(), f.getName()))
+        return folderRepository.findAllByUserUuid(request.uuid()).stream()
+                .map(f -> new ResFolder(f.getFolderId(), f.getFolderName()))
                 .toList();
     }
 
@@ -39,28 +39,28 @@ public class FolderService {
         folderRepository.save(folder);
 
         // 수정 후, 해당 uuid에 속한 전체 폴더 목록 반환
-        return folderRepository.findAllByUuid(request.uuid()).stream()
-                .map(f -> new ResFolder(f.getId(), f.getName()))
+        return folderRepository.findAllByUserUuid(request.uuid()).stream()
+                .map(f -> new ResFolder(f.getFolderId(), f.getFolderName()))
                 .toList();
     }
 
     public List<ResFolder> deleteFolder(Long id, ReqUuid request) {
         Folder folder = folderRepository.findById(id)
-                .filter(f -> f.getUuid().equals(request.uuid()))
+                .filter(f -> f.getUserUuid().equals(request.uuid()))
                 .orElseThrow(() -> new RuntimeException("해당 UUID에 해당 폴더가 존재하지 않습니다."));
 
         folderRepository.delete(folder);
 
-        List<Folder> folders = folderRepository.findAllByUuid(request.uuid());
+        List<Folder> folders = folderRepository.findAllByUserUuid(request.uuid());
         return folders.stream()
-                .map(f -> new ResFolder(f.getId(), f.getName()))
+                .map(f -> new ResFolder(f.getFolderId(), f.getFolderName()))
                 .toList();
     }
 
     public List<ResFolder> getFoldersByUuid(UUID uuid) {
-        List<Folder> folders = folderRepository.findAllByUuid(uuid);
+        List<Folder> folders = folderRepository.findAllByUserUuid(uuid);
         return folders.stream()
-                .map(f -> new ResFolder(f.getId(), f.getName()))
+                .map(f -> new ResFolder(f.getFolderId(), f.getFolderName()))
                 .toList();
     }
 }
