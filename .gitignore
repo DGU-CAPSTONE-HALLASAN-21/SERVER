@@ -43,3 +43,4 @@ bin/
 .DS_Store
 
 application.yml
+oci_api_key.pem
