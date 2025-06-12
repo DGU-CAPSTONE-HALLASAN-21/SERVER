@@ -2,25 +2,35 @@ package org.dgu.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.dgu.dto.chat.ReqChatCreate;
 import org.dgu.dto.chat.ReqChatRename;
 import org.dgu.dto.chat.ResChat;
 import org.dgu.dto.chat.ResChatDetail;
 import org.dgu.dto.message.ResMessage;
-import org.dgu.entity.Folder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.dgu.service.chat.ChatService;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/folders/{folderId}/chats")
 @Tag(name = "Chat", description = "폴더 내 대화 API")
 public class ChatController {
 
-    @PostMapping("")
+    private final ChatService chatService;
+
+    @PostMapping
     @Operation(summary = "대화 생성", description = "폴더 내 새로운 대화를 생성합니다.")
-    public List<ResChat> createChat(@PathVariable Long folderId, @RequestBody ReqChatCreate request) {
-        return List.of();
+    public String getAnswer(@PathVariable("folderId") Long folderId, @RequestBody String content) {
+        return chatService.answer(content).choices().get(0).message().content();
     }
 
     @GetMapping("")
