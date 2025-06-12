@@ -46,3 +46,9 @@ oracle:
   region: "us-chicago-1"
   compartment-id: ${COMPARTMENT_ID}
   model-id: "cohere.command"
+
+openai:
+  model: ${OPEN_AI_MODEL}
+  api:
+      url: ${OPEN_AI_API_URL}
+  secret-key: ${OPEN_AI_SECRET_KEY}
