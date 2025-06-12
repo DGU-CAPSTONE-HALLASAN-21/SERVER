@@ -8,6 +8,7 @@ import org.dgu.dto.autocomplete.vo.Message;
 public record ReqAutoComplete(
         List<Message> messages,
         String model,
+        Double temperature,
         Boolean stream,
         Boolean store
 ) {
