@@ -17,6 +17,6 @@ public class AutoCompleteController {
 
     @PostMapping
     String predictFullSentence(@RequestBody String input) {
-        return autocompleteService.predictFullSentence(input).choices().get(0).message().content().substring(input.length()-1);
+        return autocompleteService.predictFullSentence(input).choices().get(0).message().content().substring(input.length());
     }
 }

@@ -13,7 +13,7 @@ public class WebClientConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 모든 경로에 대해
-                        .allowedOrigins("http://localhost:5174") // 허용할 origin
+                        .allowedOrigins("http://localhost:5173") // 허용할 origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true); // 쿠키 포함 시 필요
