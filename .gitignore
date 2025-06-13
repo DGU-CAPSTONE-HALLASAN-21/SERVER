@@ -41,6 +41,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
 .env
-src/resource/.env
+src/main/resource/Wallet_auto
+src/main/resource/.env
