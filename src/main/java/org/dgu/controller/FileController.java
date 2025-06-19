@@ -54,4 +54,19 @@ public class FileController {
         return new String(file.getBytes(), StandardCharsets.UTF_8);
     }
 
+    @GetMapping("/files")
+    public ResponseEntity<List<FileInfo>> getUploadedFiles() {
+        List<FileInfo> result = new ArrayList<>();
+
+        for (int i = 0; i < files.size(); i++) {
+            String name = files.get(i);
+            String content = i < fileContents.size() ? fileContents.get(i) : "";
+            Long size = fileSizes.get(i);
+
+            result.add(new FileInfo(name, content, size));
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
 }
