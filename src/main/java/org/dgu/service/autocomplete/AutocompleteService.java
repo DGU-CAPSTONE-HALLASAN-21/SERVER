@@ -31,7 +31,7 @@ public class AutocompleteService {
         ReqAutoComplete request = ReqAutoComplete.builder()
                 .model(model)
                 .store(true)
-                .temperature(1.1)
+                .temperature(1.0)
                 .messages(new ArrayList<>(List.of(new Message("user", promptWithInput))))
                 .build();
         return template.postForObject(apiURL, request, ResAutoComplete.class);
