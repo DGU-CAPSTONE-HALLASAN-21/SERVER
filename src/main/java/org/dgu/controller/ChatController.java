@@ -21,16 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/folders/{folderId}/chats")
+@RequestMapping("/folders/{folderId}/chats/{promptId}")
 @Tag(name = "Chat", description = "폴더 내 대화 API")
 public class ChatController {
 
     private final ChatService chatService;
 
     @PostMapping
-    @Operation(summary = "대화 생성", description = "폴더 내 새로운 대화를 생성합니다.")
-    public String getAnswer(@PathVariable("folderId") Long folderId, @RequestBody String content) {
-        return chatService.answer(content).choices().get(0).message().content();
+    @Operation(summary = "대화 생성", description = "폴더 내 새로운 대화를 생성합니다. promptId 1은 최종 선정 프롬프트, 2는 롤플레잉 기법, 3은 롤플레잉+COT 기법, 4는 Few-shot 기법을 적용한 프롬프트입니다.")
+    public String getAnswer(
+            @PathVariable("folderId") Long folderId,
+            @PathVariable("promptId") Long promptId,
+            @RequestBody String content
+    ) {
+        return chatService.answer(promptId, content).choices().getFirst().message().content();
     }
 
     @GetMapping("")
