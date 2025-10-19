@@ -27,8 +27,24 @@ public class ChatService {
     }
 
     //TODO: ~Auto~ 아래 클래스 명 변경
-    public ResAutoComplete answer(final String content) {
-        String promptWithInput = AutoCompletionPrompt.질문답변.getContent().replace("${input}", content);
+    public ResAutoComplete answer(final long promptId, final String content) {
+        String promptWithInput;
+        if (promptId == 1) {
+            promptWithInput = AutoCompletionPrompt.질문답변.getContent().replace("${input}", content);
+        }
+        else if (promptId == 2) {
+            promptWithInput = AutoCompletionPrompt.ROLE_PLAY.getContent().replace("${input}", content);
+
+        }
+        else if (promptId == 3) {
+            promptWithInput = AutoCompletionPrompt.ROLE_PLAY_COT.getContent().replace("${input}", content);
+
+        } else if (promptId == 4) {
+            promptWithInput = AutoCompletionPrompt.FEW_SHOT.getContent().replace("${input}", content);
+
+        } else {
+            promptWithInput = AutoCompletionPrompt.질문답변.getContent().replace("${input}", content);
+        }
 
         ReqAutoComplete request = ReqAutoComplete.builder()
                 .model(model)
